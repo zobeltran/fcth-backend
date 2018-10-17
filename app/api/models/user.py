@@ -11,10 +11,14 @@ a_user_details = api.model('users',
                             'username': fields.String(),
                             'password': fields.String(),
                             'role': fields.String(),
-                            'publicid': fields.String(),
+                            'publicId': fields.String(),
                             'dateCreated': fields.DateTime(),
                             'dateUpdated': fields.DateTime()
                             })
+a_user_names = api.model('names',
+                         {'firstName': fields.String,
+                          'middleName': fields.String,
+                          'lastName': fields.String})
 a_user = api.model('user',
                    {'firstName': fields.String(),
                     'middleName': fields.String(),

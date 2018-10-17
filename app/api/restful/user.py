@@ -10,13 +10,6 @@ from flask_bcrypt import Bcrypt
 import uuid
 
 secretkey = getenv('SECRET_KEY')
-authentication = {
-    'apiKey': {
-        'type': 'apiKey',
-        'in': 'header',
-        'name': 'X-CLIENT-TOKEN'
-    }
-}
 bcrypt = Bcrypt()
 
 
@@ -90,7 +83,7 @@ class RegisterApi(Resource):
                               }}, 400
 
 
-@api.route('/users')
+@api.route('')
 class UserApi(Resource):
 
     @api.doc(security='apiKey', responses={200: 'Success',

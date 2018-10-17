@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, url_for
 from os import getenv
 from app.models import db
 # from app.apiModels import ma
@@ -6,9 +6,9 @@ from app.apiv1 import apiRoutes
 from app.api.restful.user import bcrypt
 from flask_migrate import Migrate
 
+
 # Flask Activation
-app = Flask(__name__, static_folder="../dist",
-            template_folder="../dist")
+app = Flask(__name__)
 
 # Set Configurations
 secretKey = getenv('SECRET_KEY')
@@ -34,12 +34,14 @@ bcrypt.init_app(app)
 app.register_blueprint(apiRoutes)
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    if app.debug:
-        return request.get('http://localhost:8080/{}'.format(path)).text
-    return render_template("index.html")
+@app.route('/')
+def index():
+    return redirect(url_for('documentationV1'))
+
+
+@app.route('/api/v1/documentation')
+def documentationV1():
+    pass
 
 
 if __name__ == '__main__':

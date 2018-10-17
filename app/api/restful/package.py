@@ -1,17 +1,26 @@
 from flask_restplus import Resource
-from app.models import Package
+from app.models import db, Package
 from app.api.models.package import api, packageDetails, packageInsert
-from app.models import db
 from app.helpers import token_required
 
 
-@api.route('packages')
+@api.route('')
 class PackagesApi(Resource):
+    @api.doc(security=None,
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
     @api.marshal_list_with(packageDetails, envelope='packages')
     def get(self):
         viewPackages = Package.query.all()
         return viewPackages
 
+    @api.doc(security=None,
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
     @token_required
     @api.expect(packageInsert)
     def post(self):
@@ -37,6 +46,16 @@ class PackagesApi(Resource):
                           'message': 'Please fill up the form'
                           }}, 400
 
+
+@api.route('?id=<int:id>')
+@api.response(404, 'Not Found')
+@api.param('id', 'Package Id')
+class PackageIdApi(Resource):
+    @api.doc(security=None,
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
     @token_required
     @api.expect(packageInsert)
     def put(self):
@@ -61,6 +80,11 @@ class PackagesApi(Resource):
                           'errorCode': 'E2000',
                           'message': 'Please fill up the form'}}, 400
 
+    @api.doc(security=None,
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
     @token_required
     @api.expect(packageInsert)
     def delete(self):

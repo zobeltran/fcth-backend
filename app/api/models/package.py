@@ -5,7 +5,7 @@ api = Namespace('Packages', 'Packages Related APIs', path='/packages')
 packageDetails = api.model('packages',
                            {'id': fields.Integer(),
                             'destination': fields.String(),
-                            'price': fields.Decimal(),
+                            'price': fields.Float(),
                             'days': fields.Integer(),
                             'intenerary': fields.String(),
                             'inclusions': fields.String(),
@@ -17,9 +17,9 @@ packageDetails = api.model('packages',
                             'isExpired': fields.Boolean()
                             })
 
-packageInsert = api.model('packages',
+packageInsert = api.model('package',
                           {'destination': fields.String(),
-                           'price': fields.Decimal(),
+                           'price': fields.Float(),
                            'days': fields.Integer(),
                            'intenerary': fields.String(),
                            'inclusions': fields.String(),
