@@ -5,6 +5,7 @@ from app.models import db
 from app.apiv1 import apiRoutes
 from app.api.restful.user import bcrypt
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 
 # Flask Activation
@@ -29,6 +30,8 @@ db.init_app(app)
 # ma.init_app(app)
 migrate = Migrate(app, db)
 bcrypt.init_app(app)
+cors = CORS(app)
+
 
 # Activate Blueprints
 app.register_blueprint(apiRoutes)

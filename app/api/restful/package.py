@@ -2,9 +2,11 @@ from flask_restplus import Resource
 from app.models import db, Package
 from app.api.models.package import api, packageDetails, packageInsert
 from app.helpers import token_required
+from flask_cors import cross_origin
 
 
 @api.route('')
+# @cross_origin(allow_headers=['Content-Type'])
 class PackagesApi(Resource):
     @api.doc(security=None,
              responses={
@@ -12,6 +14,7 @@ class PackagesApi(Resource):
               400: 'Bad Request'
              })
     @api.marshal_list_with(packageDetails, envelope='packages')
+    # @cross_origin(allow_headers=['Content-Type'])
     def get(self):
         viewPackages = Package.query.all()
         return viewPackages
@@ -21,6 +24,7 @@ class PackagesApi(Resource):
               200: 'Success',
               400: 'Bad Request'
              })
+    # @cross_origin(allow_headers=['Content-Type'])
     @token_required
     @api.expect(packageInsert)
     def post(self):
@@ -49,6 +53,7 @@ class PackagesApi(Resource):
 
 @api.route('?id=<int:id>')
 @api.response(404, 'Not Found')
+# @cross_origin(allow_headers=['Content-Type'])
 @api.param('id', 'Package Id')
 class PackageIdApi(Resource):
     @api.doc(security=None,
@@ -58,6 +63,7 @@ class PackageIdApi(Resource):
              })
     @token_required
     @api.expect(packageInsert)
+    # @cross_origin(allow_headers=['Content-Type'])
     def put(self):
         data = api.payload
         if data:
@@ -87,5 +93,6 @@ class PackageIdApi(Resource):
              })
     @token_required
     @api.expect(packageInsert)
+    # @cross_origin(allow_headers=['Content-Type'])
     def delete(self):
         return {'result': 'Package has been deleted'}

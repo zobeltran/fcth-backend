@@ -7,6 +7,7 @@ import jwt
 from datetime import datetime, timedelta
 from os import getenv
 from flask_bcrypt import Bcrypt
+from flask_cors import cross_origin
 import uuid
 
 secretkey = getenv('SECRET_KEY')
@@ -38,9 +39,9 @@ class AuthenticationApi(Resource):
                                     }, secretkey)
                 return {'token': token.decode('utf-8'),
                         'role': role}, 200
-        return {'errors': {'statusCode': 400,
+        return {'errors': {'statusCode': 401,
                            'errorCode': 'E1004',
-                           'message': 'User Not Found'}}, 400
+                           'message': 'User Not Found'}}, 401
 
 
 @api.route('/register')
@@ -84,6 +85,7 @@ class RegisterApi(Resource):
 
 
 @api.route('')
+# @cross_origin(allow_headers=['Content-Type'])
 class UserApi(Resource):
 
     @api.doc(security='apiKey', responses={200: 'Success',
