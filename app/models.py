@@ -26,7 +26,7 @@ class LogTrail(db.Model):
     event = db.Column("Event", db.String(250))
     eventTime = db.Column("EventTime", db.DateTime, default=db.func.now())
 
-    __tablename__ = "LogTrail"
+    __tablename__ = "logtrails"
 
 
 # Tickets Model
@@ -52,7 +52,7 @@ class Ticket(db.Model):
                                     lazy=True)
     packageFlight = db.relationship('Package', backref='Tickets', lazy=True)
 
-    __tablename__ = "Tickets"
+    __tablename__ = "tickets"
 
     def __repr__(self):
         return '{} ({} - {})'.format(self.flightNo,
@@ -80,7 +80,7 @@ class Hotel(db.Model):
                                    lazy=True)
     packageHotel = db.relationship('Package', backref='Hotels', lazy=True)
 
-    __tablename__ = "Hotels"
+    __tablename__ = "hotels"
 
     def __repr__(self):
         return '{} ({})'.format(self.name,
@@ -101,7 +101,7 @@ class Customer(db.Model):
     packageBooking = db.relationship("PackageBooking", backref='Customer',
                                      lazy=True)
 
-    __tablename__ = "Customers"
+    __tablename__ = "customers"
 
     def __repr__(self):
         return '{} {} ({})'.format(self.firstName,
@@ -125,7 +125,7 @@ class FlightInquiry(db.Model):
     infant = db.Column("NumberOfInfant", db.Integer)
     note = db.Column("Note", db.String(300))
 
-    __tablename__ = "FlightInquiry"
+    __tablename__ = "flightinquiries"
 
 
 # Hotel Inquiry
@@ -141,7 +141,7 @@ class HotelInquiry(db.Model):
     checkOut = db.Column("checkOutDate", db.Date)
     note = db.Column("Note", db.String(300))
 
-    __tablename__ = "HotelInquiry"
+    __tablename__ = "hotelinquiries"
 
 
 # Package
@@ -155,13 +155,13 @@ class Package(db.Model):
     remainingSlots = db.Column("RemainingSlots", db.Integer)
     expirationDate = db.Column("ExpirationDate", db.Date)
     note = db.Column("Note", db.String(1000))
-    hotel = db.Column('HotelsFk', db.Integer, db.ForeignKey('Hotels.Id'))
-    flight = db.Column('FlightFk', db.Integer, db.ForeignKey('Tickets.Id'))
+    hotel = db.Column('HotelsFk', db.Integer, db.ForeignKey('hotels.Id'))
+    flight = db.Column('FlightFk', db.Integer, db.ForeignKey('tickets.Id'))
     isExpired = db.Column('isExpired', db.Boolean, default=False)
     packageBooking = db.relationship("PackageBooking", backref='Package',
                                      lazy=True)
 
-    __tablename__ = 'Packages'
+    __tablename__ = 'packages'
 
     def __repr__(self):
         return '{}'.format(self.destination)
@@ -172,11 +172,11 @@ class PackageBooking(db.Model):
     id = db.Column("Id", db.Integer, primary_key=True)
     referenceNumber = db.Column("ReferenceNumber", db.String(50))
     customer = db.Column('CustomersFk', db.Integer,
-                         db.ForeignKey('Customers.Id'))
-    package = db.Column('PackagesFk', db.Integer, db.ForeignKey('Packages.Id'))
+                         db.ForeignKey('customers.Id'))
+    package = db.Column('PackagesFk', db.Integer, db.ForeignKey('packages.Id'))
     isPaid = db.Column('IsPaid', db.Boolean, default=False)
 
-    __tablename__ = 'PackageBooking'
+    __tablename__ = 'packagebookings'
 
 
 # Hotel Booking
@@ -184,11 +184,11 @@ class HotelBooking(db.Model):
     id = db.Column("Id", db.Integer, primary_key=True)
     referenceNumber = db.Column("ReferenceNumber", db.String(50))
     customer = db.Column('CustomersFk', db.Integer,
-                         db.ForeignKey('Customers.Id'))
-    hotel = db.Column('HotelsFk', db.Integer, db.ForeignKey('Hotels.Id'))
+                         db.ForeignKey('customers.Id'))
+    hotel = db.Column('HotelsFk', db.Integer, db.ForeignKey('hotels.Id'))
     isPaid = db.Column('IsPaid', db.Boolean, default=False)
 
-    __tablename__ = 'HotelBooking'
+    __tablename__ = 'hotelbookings'
 
 
 # Flight Booking
@@ -196,11 +196,11 @@ class FlightBooking(db.Model):
     id = db.Column("Id", db.Integer, primary_key=True)
     referenceNumber = db.Column("ReferenceNumber", db.String(50))
     customer = db.Column('CustomersFk', db.Integer,
-                         db.ForeignKey('Customers.Id'))
-    flight = db.Column('FlightFk', db.Integer, db.ForeignKey('Tickets.Id'))
+                         db.ForeignKey('customers.Id'))
+    flight = db.Column('FlightFk', db.Integer, db.ForeignKey('tickets.Id'))
     isPaid = db.Column('IsPaid', db.Boolean, default=False)
 
-    __tablename__ = 'TicketBooking'
+    __tablename__ = 'ticketbookings'
 
 
 # Strip Customer
@@ -209,7 +209,7 @@ class StripeCustomer(db.Model):
     email = db.Column("Email", db.String(50))
     stripeCustomerId = db.Column("StripeCustomerId", db.String(50))
 
-    __tablename__ = 'StripeCustomers'
+    __tablename__ = 'stripcustomers'
 
 
 # Payments
@@ -219,7 +219,7 @@ class Payments(db.Model):
     bookingReference = db.Column("BookingReference", db.String(50))
     paymentFor = db.Column("PaymentFor", db.String(50))
     stripeCustomer = db.Column("StripeCustomer",
-                               db.ForeignKey('StripeCustomers.Id'))
+                               db.ForeignKey('stripcustomers.Id'))
     stripeChargeId = db.Column("StripChargeId", db.String(50))
 
-    __tablename__ = "Payments"
+    __tablename__ = "payments"

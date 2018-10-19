@@ -7,11 +7,11 @@ import jwt
 from datetime import datetime, timedelta
 from os import getenv
 from flask_bcrypt import Bcrypt
-from flask_cors import cross_origin
 import uuid
 
 secretkey = getenv('SECRET_KEY')
 bcrypt = Bcrypt()
+errors = []
 
 
 @api.route('/auth/login')
@@ -23,25 +23,51 @@ class AuthenticationApi(Resource):
              })
     @api.expect(a_auth)
     def post(self):
+        errors.clear()
         data = api.payload
-        username = data['username']
-        password = data['password']
-        user = User.query.filter(User.username == username).first()
-        if user:
-            dbpassword = user.password_hashed
-            checkHash = bcrypt.check_password_hash(dbpassword, password)
-            role = user.role
-            if checkHash:
-                time = (datetime.utcnow() + timedelta(minutes=30))
-                token = jwt.encode({'sub': user.publicId,
-                                    'role': user.role,
-                                    'exp': time,
-                                    }, secretkey)
-                return {'token': token.decode('utf-8'),
-                        'role': role}, 200
-        return {'errors': {'statusCode': 401,
-                           'errorCode': 'E1004',
-                           'message': 'User Not Found'}}, 401
+        try:
+            username = data['username']
+            password = data['password']
+            if data:
+                if not username and not password:
+                    errors.append('Username must not be null')
+                    errors.append('Password must not be null')
+                    return {'errors': {'statuscode': 400,
+                                       'errorcode': 'E1011',
+                                       'message': errors}}, 400
+                if not username:
+                    errors.append('Username must not be null')
+                    return {'errors': {'statuscode': 400,
+                                       'errorcode': 'E1011',
+                                       'message': errors}}, 400
+                if not password:
+                    errors.append('Password must not be null')
+                    return {'errors': {'statuscode': 400,
+                                       'errorcode': 'E1011',
+                                       'message': errors}}, 400
+                user = User.query.filter(User.username == username).first()
+                if user:
+                    dbpassword = user.password_hashed
+                    checkHash = bcrypt.check_password_hash(dbpassword,
+                                                           password)
+                    role = user.role
+                    if checkHash:
+                        time = (datetime.utcnow() + timedelta(minutes=30))
+                        token = jwt.encode({'sub': user.publicId,
+                                            'role': user.role,
+                                            'exp': time,
+                                            }, secretkey)
+                        return {'token': token.decode('utf-8'),
+                                'role': role}, 200
+                errors.append('User not found')
+                return {'errors': {'statusCode': 401,
+                                   'errorCode': 'E1004',
+                                   'message': errors}}, 401
+        except KeyError:
+            errors.append('Incomplete json nodes')
+            return {'errors': {'status': 400,
+                               'errorCode': 'E0001',
+                               'message': errors}}, 400
 
 
 @api.route('/register')
@@ -54,33 +80,41 @@ class RegisterApi(Resource):
         @api.expect(a_user)
         @token_required
         def post(self):
+            errors.clear()
             data = api.payload
+            firstName = data['firstName']
+            middleName = data['middleName']
+            lastName = data['lastName']
+            username = data['username']
+            publicId = uuid.uuid4()
+            role = data['role']
             if data:
                 passwordBycrypt = (bcrypt.
                                    generate_password_hash(data['password']))
                 usernameUnique = (User.query
                                   .filter(User.username ==
                                           data['username']).all())
+                password_hashed = (passwordBycrypt.decode('utf-8'))
                 if usernameUnique:
-                    return {'error': {
-                                      'statusCode': 400,
-                                      'message': 'Username already taken'
+                    errors.append('Username already taken')
+                    return {'error': {'statusCode': 400,
+                                      'message': errors
                                       }}, 400
                 else:
-                    new_user = User(firstName=data['firstName'],
-                                    middleName=data['middleName'],
-                                    lastName=data['lastName'],
-                                    username=data['username'],
-                                    publicId=uuid.uuid4(),
-                                    password_hashed=(passwordBycrypt
-                                                     .decode('utf-8')),
-                                    role=data['role'])
+                    new_user = User(firstName=firstName,
+                                    middleName=middleName,
+                                    lastName=lastName,
+                                    username=username,
+                                    publicId=publicId,
+                                    password_hashed=password_hashed,
+                                    role=role)
                     db.session.add(new_user)
                     db.session.commit()
                     return {'result': 'User has been successfull added'}, 201
+            errors.append('Please fill up the form')
             return {'error': {
                               'statusCode': 400,
-                              'message': 'Please fill up the form'
+                              'message': errors
                               }}, 400
 
 

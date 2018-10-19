@@ -39,3 +39,7 @@ def token_required(f):
                                }}
         return f(*args, **kwargs)
     return decorated
+
+
+def isString(self, data):
+    return isinstance(data, str)

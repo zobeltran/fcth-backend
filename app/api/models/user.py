@@ -15,12 +15,9 @@ a_user_details = api.model('users',
                             'dateCreated': fields.DateTime(),
                             'dateUpdated': fields.DateTime()
                             })
-a_user_names = api.model('names',
-                         {'firstName': fields.String,
-                          'middleName': fields.String,
-                          'lastName': fields.String})
 a_user = api.model('user',
-                   {'firstName': fields.String(),
+                   {'firstName': fields.String(desc=("First Name "
+                                                     "of the Employee")),
                     'middleName': fields.String(),
                     'lastName': fields.String(),
                     'email': fields.String(),
@@ -28,6 +25,14 @@ a_user = api.model('user',
                     'password': fields.String(),
                     'role': fields.String()
                     })
+a_user_schema = api.schema_model('user',
+                                 {'properties': {
+                                    'firstName': {
+                                        'type': 'string'
+                                    }
+                                  },
+                                  'type': 'object'
+                                  })
 a_auth = api.model('auth',
                    {'username': fields.String(),
                     'password': fields.String()})
