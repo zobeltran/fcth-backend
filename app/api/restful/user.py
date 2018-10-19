@@ -78,7 +78,7 @@ class RegisterApi(Resource):
                   400: 'Bad Request'
                  })
         @api.expect(a_user)
-        @token_required
+        # @token_required
         def post(self):
             errors.clear()
             data = api.payload

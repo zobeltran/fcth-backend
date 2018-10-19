@@ -25,14 +25,6 @@ a_user = api.model('user',
                     'password': fields.String(),
                     'role': fields.String()
                     })
-a_user_schema = api.schema_model('user',
-                                 {'properties': {
-                                    'firstName': {
-                                        'type': 'string'
-                                    }
-                                  },
-                                  'type': 'object'
-                                  })
 a_auth = api.model('auth',
                    {'username': fields.String(),
                     'password': fields.String()})
