@@ -38,8 +38,6 @@ class Ticket(db.Model):
     arrival = db.Column("Arrival", db.String(100))
     departureDate = db.Column("DepartureDate", db.Date)
     departureTime = db.Column("DepartureTime", db.Time)
-    arrivalDate = db.Column("ArrivalDate", db.Date)
-    arrivalTime = db.Column("ArrivalTime", db.Time)
     returnDate = db.Column("ReturnDate", db.Date)
     returnTime = db.Column("ReturnTime", db.Time)
     remainingSlots = db.Column("RemainingSlots", db.Integer)
