@@ -15,7 +15,8 @@ class User(db.Model):
     role = db.Column("Role", db.String(25))
     publicId = db.Column("PublicId", db.String(255))
     dateCreated = db.Column('DateCreated', db.DateTime, default=db.func.now())
-    dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now())
+    dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now(),
+                            default=db.func.now())
     isArchived = db.Column('IsArchived', db.Boolean, default=False)
 
     __tablename__ = 'users'
@@ -46,7 +47,8 @@ class Ticket(db.Model):
     isExpired = db.Column("IsExpired", db.Boolean, default=False)
     isPackaged = db.Column("IsPackaged", db.Boolean, default=False)
     dateCreated = db.Column('DateCreated', db.DateTime, default=db.func.now())
-    dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now())
+    dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now(),
+                            default=db.func.now())
     isArchived = db.Column('IsArchived', db.Boolean, default=False)
     ticketBooking = db.relationship("FlightBooking", backref='Flight',
                                     lazy=True)
@@ -74,7 +76,8 @@ class Hotel(db.Model):
     isExpired = db.Column("IsExpired", db.Boolean, default=False)
     isPackaged = db.Column("isPackaged", db.Boolean, default=False)
     dateCreated = db.Column('DateCreated', db.DateTime, default=db.func.now())
-    dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now())
+    dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now(),
+                            default=db.func.now())
     remainingRooms = db.Column('RemainingRooms', db.Integer)
     isArchived = db.Column('IsArchived', db.Boolean, default=False)
     hotelBooking = db.relationship("HotelBooking", backref='Hotel',
