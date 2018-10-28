@@ -16,6 +16,7 @@ class User(db.Model):
     publicId = db.Column("PublicId", db.String(255))
     dateCreated = db.Column('DateCreated', db.DateTime, default=db.func.now())
     dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now())
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
 
     __tablename__ = 'users'
 
@@ -48,6 +49,7 @@ class Ticket(db.Model):
     isPackaged = db.Column("IsPackaged", db.Boolean, default=False)
     dateCreated = db.Column('DateCreated', db.DateTime, default=db.func.now())
     dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now())
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
     ticketBooking = db.relationship("FlightBooking", backref='Flight',
                                     lazy=True)
     packageFlight = db.relationship('Package', backref='Tickets', lazy=True)
@@ -76,6 +78,7 @@ class Hotel(db.Model):
     dateCreated = db.Column('DateCreated', db.DateTime, default=db.func.now())
     dateUpdated = db.Column('DateUpdated', db.DateTime, onupdate=db.func.now())
     remainingRooms = db.Column('RemainingRooms', db.Integer)
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
     hotelBooking = db.relationship("HotelBooking", backref='Hotel',
                                    lazy=True)
     packageHotel = db.relationship('Package', backref='Hotels', lazy=True)
@@ -94,6 +97,7 @@ class Customer(db.Model):
     lastName = db.Column("LastName", db.String(250))
     email = db.Column("Email", db.String(100))
     contactNo = db.Column("Contact", db.String(50))
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
     hotelBooking = db.relationship("HotelBooking", backref='Customer',
                                    lazy=True)
     flightBooking = db.relationship("FlightBooking", backref='Customer',
@@ -124,6 +128,7 @@ class FlightInquiry(db.Model):
     child = db.Column("NumberOfChild", db.Integer)
     infant = db.Column("NumberOfInfant", db.Integer)
     note = db.Column("Note", db.String(300))
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
 
     __tablename__ = "flightinquiries"
 
@@ -140,6 +145,7 @@ class HotelInquiry(db.Model):
     checkIn = db.Column("checkInDate", db.Date)
     checkOut = db.Column("checkOutDate", db.Date)
     note = db.Column("Note", db.String(300))
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
 
     __tablename__ = "hotelinquiries"
 
@@ -157,6 +163,7 @@ class Package(db.Model):
     note = db.Column("Note", db.String(1000))
     hotel = db.Column('HotelsFk', db.Integer, db.ForeignKey('hotels.Id'))
     flight = db.Column('FlightFk', db.Integer, db.ForeignKey('tickets.Id'))
+    isArchived = db.Column('IsArchived', db.Boolean, default=False)
     isExpired = db.Column('isExpired', db.Boolean, default=False)
     packageBooking = db.relationship("PackageBooking", backref='Package',
                                      lazy=True)
