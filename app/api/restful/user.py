@@ -85,6 +85,7 @@ class RegisterApi(Resource):
                 data = api.payload
                 firstName = data['firstName']
                 middleName = data['middleName']
+                email = data['email']
                 lastName = data['lastName']
                 username = data['username']
                 password = data['password']
@@ -96,6 +97,7 @@ class RegisterApi(Resource):
                             not lastName or
                             not username or
                             not password or
+                            not email or
                             not role):
                         if not firstName:
                             errors.append('First Name must not be null')
@@ -105,6 +107,8 @@ class RegisterApi(Resource):
                             errors.append('Username must not be null')
                         if not password:
                             errors.append('Password must not be null')
+                        if not email:
+                            errors.append('Email must not be null')
                         if not role:
                             errors.append('Role must not be null')
                         return {'errors': {'statusCode': 400,
@@ -127,6 +131,7 @@ class RegisterApi(Resource):
                                             middleName=middleName,
                                             lastName=lastName,
                                             username=username,
+                                            email=email,
                                             publicId=publicId,
                                             password_hashed=password_hashed,
                                             role=role)
