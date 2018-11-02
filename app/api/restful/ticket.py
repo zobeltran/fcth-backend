@@ -20,7 +20,7 @@ class TicketApi(Resource):
     def get(self):
         viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
                        .filter(Ticket.isPackaged.is_(False)).all())
-        return viewFlights
+        return viewFlights, 200
 
     @api.doc(security=None,
              responses={
