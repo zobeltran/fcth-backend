@@ -13,7 +13,6 @@ class PackagesApi(Resource):
               400: 'Bad Request'
              })
     @api.marshal_list_with(packageDetails, envelope='packages')
-    # @cross_origin(allow_headers=['Content-Type'])
     def get(self):
         viewPackages = Package.query.all()
         return viewPackages
@@ -23,7 +22,6 @@ class PackagesApi(Resource):
               200: 'Success',
               400: 'Bad Request'
              })
-    # @cross_origin(allow_headers=['Content-Type'])
     @token_required
     @api.expect(packageInsert)
     def post(self):
@@ -66,19 +64,17 @@ class PackageIdApi(Resource):
     def put(self):
         data = api.payload
         if data:
-            updatePackage = Package(destination=data['destination'],
-                                    price=data['price'],
-                                    days=data['days'],
-                                    intenerary=data['itenerary'],
-                                    inclusions=data['inclusions'],
-                                    remainingSlots=data['remainingSlots'],
-                                    expirationDate=data['expirationDate'],
-                                    note=data['note'],
-                                    hotel=data['hotel'],
-                                    flight=data['flight'],
-                                    isExpired=data['isExpired']
-                                    )
-            db.session.update(updatePackage)
+            Package.destination = data['destination']
+            Package.price = data['price']
+            Package.days = data['days']
+            Package.intenerary = data['itenerary']
+            Package.inclusions = data['inclusions']
+            Package.remainingSlots = data['remainingSlots']
+            Package.expirationDate = data['expirationDate']
+            Package.note = data['note']
+            Package.hotel = data['hotel']
+            Package.flight = data['flight']
+            Package.isExpired = data['isExpired']
             db.session.commit()
             return {'result': 'Package has been updated'}, 200
         return {'error': {'statusCode': 400,
