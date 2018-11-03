@@ -22,7 +22,7 @@ class TicketApi(Resource):
                        .filter(Ticket.isPackaged.is_(False)).all())
         return viewFlights, 200
 
-    @api.doc(security=None,
+    @api.doc(security='apiKey',
              responses={
               200: 'Success',
               400: 'Bad Request'
@@ -130,7 +130,19 @@ class TicketApi(Resource):
 @api.response(404, 'Not Found')
 @api.param('id', 'Flight Id')
 class TicketIdApi(Resource):
-    @api.doc(security=None,
+    @api.doc(security='apiKey',
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
+    @token_required
+    @api.marshal_list_with(flightDetails, envelope='flightDetails')
+    def get(self, id):
+        viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
+                       .filter(Ticket.id == id).all())
+        return viewFlights, 200
+
+    @api.doc(security='apiKey',
              responses={
               200: 'Success',
               400: 'Bad Request'

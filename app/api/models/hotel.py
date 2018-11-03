@@ -31,5 +31,5 @@ postHotel = api.model('Post Hotels',
                        'isPackaged': fields.Boolean(),
                        'remainingRooms': fields.Integer()})
 
-deleteHotel = api.model('Delete Model',
+deleteHotel = api.model('Delete Hotel',
                         {'isArchived': fields.Boolean()})

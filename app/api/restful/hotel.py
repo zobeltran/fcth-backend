@@ -126,8 +126,20 @@ class HotelApi(Resource):
 
 @api.route('/id=<int:id>')
 @api.response(404, 'Not Found')
-@api.param('id', 'Flight Id')
+@api.param('id', 'Hotel Id')
 class HotelIdApi(Resource):
+    @api.doc(security='apiKey',
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
+    @token_required
+    @api.marshal_list_with(hotelDetails, envelope='hotelDetails')
+    def get(self, id):
+        viewHotel = (Hotel.query.filter(Hotel.isArchived.is_(False))
+                     .filter(Hotel.id == id).all())
+        return viewHotel, 200
+
     @api.doc(security='apiKey',
              response={
                  200: 'Success',
