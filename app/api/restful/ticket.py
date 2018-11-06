@@ -251,9 +251,9 @@ class TicketIdApi(Resource):
                                'message': errors}}, 400
 
     @api.doc(security='apiKey',
-             responses={
-              200: 'Success',
-              400: 'Bad Request'
+             response={
+                 200: 'Success',
+                 400: 'Bad Request'
              })
     @token_required
     @api.expect(deleteFlight)
