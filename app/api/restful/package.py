@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.models import db, Package
-from app.api.models.package import api, packageDetails, packageInsert
+from app.api.models.packages import api, packageDetails, packageInsert
 from app.helpers import token_required
 
 
