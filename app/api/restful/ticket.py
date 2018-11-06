@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.models import db, Ticket
-from app.api.models.ticket import api, flightDetails, postFlight, deleteFlight
+from app.api.models.ticket import api, flightDetails, postFlight
 from app.helpers import token_required
 from datetime import datetime
 from dateutil.parser import parse
@@ -256,23 +256,17 @@ class TicketIdApi(Resource):
                  400: 'Bad Request'
              })
     @token_required
-    @api.expect(deleteFlight)
+    # @api.expect(deleteFlight)
     def delete(self, id):
         errors.clear()
         ticket = Ticket.query.get(id)
         data = api.payload
-        try:
-            if not ticket:
-                errors.append('Id does not exist')
-                return {'errors': {'status': 400,
-                                   'errorCode': 'E0001',
-                                   'message': errors}}, 400
-            else:
-                ticket.isArchived = data['isArchived']
-                db.session.commit()
-                return {'message': 'Successfully Deleted'}, 200
-        except KeyError:
-            errors.append('Incomplete json nodes')
+        if not ticket:
+            errors.append('Id does not exist')
             return {'errors': {'status': 400,
                                'errorCode': 'E0001',
                                'message': errors}}, 400
+        else:
+            ticket.isArchived = data['isArchived']
+            db.session.commit()
+            return {'message': 'Successfully Deleted'}, 200
