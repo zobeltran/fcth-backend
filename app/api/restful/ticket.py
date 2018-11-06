@@ -250,7 +250,7 @@ class TicketIdApi(Resource):
                                'errorCode': 'E0001',
                                'message': errors}}, 400
 
-    @api.doc(security='apikey')
+    @api.doc(security='apiKey')
     @token_required
     @api.expect(deleteFlight)
     def delete(self, id):
