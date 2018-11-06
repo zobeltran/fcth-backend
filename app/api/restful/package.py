@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.models import db, Package
-from app.api.models.packages import api, packageDetails, packageInsert
+from app.api.models.packages import api, packageDetails, postPackage
 from app.helpers import token_required
 
 
@@ -23,7 +23,7 @@ class PackagesApi(Resource):
               400: 'Bad Request'
              })
     @token_required
-    @api.expect(packageInsert)
+    @api.expect(postPackage)
     def post(self):
         data = api.payload
         if data:
@@ -59,7 +59,7 @@ class PackageIdApi(Resource):
               400: 'Bad Request'
              })
     @token_required
-    @api.expect(packageInsert)
+    @api.expect(postPackage)
     # @cross_origin(allow_headers=['Content-Type'])
     def put(self):
         data = api.payload
@@ -87,7 +87,7 @@ class PackageIdApi(Resource):
               400: 'Bad Request'
              })
     @token_required
-    @api.expect(packageInsert)
+    @api.expect(postPackage)
     # @cross_origin(allow_headers=['Content-Type'])
     def delete(self):
         return {'result': 'Package has been deleted'}
