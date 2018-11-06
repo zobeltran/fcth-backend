@@ -260,13 +260,12 @@ class TicketIdApi(Resource):
     def delete(self, id):
         errors.clear()
         ticket = Ticket.query.get(id)
-        data = api.payload
         if not ticket:
             errors.append('Id does not exist')
             return {'errors': {'status': 400,
                                'errorCode': 'E0001',
                                'message': errors}}, 400
         else:
-            ticket.isArchived = data['isArchived']
+            ticket.isArchived = True
             db.session.commit()
             return {'message': 'Successfully Deleted'}, 200
