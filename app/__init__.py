@@ -31,7 +31,7 @@ db.init_app(app)
 # ma.init_app(app)
 migrate = Migrate(app, db)
 bcrypt.init_app(app)
-cors = CORS(app, headers=corsHeaders)
+cors = CORS(app, allow_headers=corsHeaders)
 
 
 # Activate Blueprints
