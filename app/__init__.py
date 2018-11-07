@@ -24,7 +24,6 @@ corsHeaders = ['content-type', 'X-CLIENT-TOKEN']
 app.config['SECRET_KEY'] = secretKey
 app.config['SQLALCHEMY_DATABASE_URI'] = dbUri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = sqlTrackModifcation
-app.config['CORS_HEADERS'] = 'X-CLIENT-TOKEN'
 
 
 # Activate Extensions
@@ -32,7 +31,7 @@ db.init_app(app)
 # ma.init_app(app)
 migrate = Migrate(app, db)
 bcrypt.init_app(app)
-cors = CORS(app)
+cors = CORS(app, headers=corsHeaders)
 
 
 # Activate Blueprints
