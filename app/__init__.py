@@ -24,7 +24,7 @@ corsHeaders = ['content-type', 'X-CLIENT-TOKEN']
 app.config['SECRET_KEY'] = secretKey
 app.config['SQLALCHEMY_DATABASE_URI'] = dbUri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = sqlTrackModifcation
-app.config['CORS_HEADERS'] = corsHeaders
+app.config['CORS_HEADERS'] = 'X-CLIENT-TOKEN'
 
 
 # Activate Extensions
