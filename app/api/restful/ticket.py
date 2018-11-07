@@ -145,8 +145,9 @@ class TicketIdApi(Resource):
             return {'errors': {'status': 400,
                                'errorCode': 'E0001',
                                'message': errors}}, 400
-        return api.marshal(viewFlights, flightDetails,
-                           envelope='flightDetails'), 200
+        else:
+            return api.marshal(viewFlights, flightDetails,
+                               envelope='flightDetails'), 200
 
     @api.doc(security='apiKey',
              responses={
