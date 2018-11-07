@@ -39,15 +39,12 @@ class HotelApi(Resource):
             capacity = data['capacity']
             details = data['details']
             checkIn = parse(data['checkIn'])
-            print(checkIn)
-            print(now)
-            print(type(checkIn))
             checkOut = parse(data['checkOut'])
             price = float(data['price'])
             expirationDate = parse(data['expirationDate'])
             isExpired = data['isExpired']
             isPackaged = data['isPackaged']
-            remainingRooms = data['remainingRooms']
+            remainingRooms = int(data['remainingRooms'])
             if (not name or not roomType
                     or not capacity
                     or not details
