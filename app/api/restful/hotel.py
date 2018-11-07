@@ -239,11 +239,10 @@ class HotelIdApi(Resource):
                  400: 'Bad Request'
              })
     @token_required
-    @api.expect(deleteHotel)
+    # @api.expect(deleteHotel)
     def delete(self, id):
         errors.clear()
         hotel = Hotel.query.get(id)
-        data = api.payload
         try:
             if not hotel:
                 errors.append('Id does not exist')
@@ -251,7 +250,7 @@ class HotelIdApi(Resource):
                                    'errorCode': 'E0001',
                                    'message': errors}}, 400
             else:
-                hotel.isArchived = data['isArchived']
+                hotel.isArchived = True
                 db.session.commit()
                 return {'message': 'Successfully Deleted'}, 200
         except KeyError:
