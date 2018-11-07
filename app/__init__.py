@@ -15,6 +15,7 @@ app = Flask(__name__)
 secretKey = getenv('SECRET_KEY')
 dbUri = getenv('DATABASE_URI')
 sqlTrackModifcation = getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+corsHeaders = ['content-type', 'X-CLIENT-TOKEN']
 # app_dir = path.dirname(__file__)
 # root_dir = path.dirname(app_dir)
 # dist_dir = path.join(root_dir, 'dist')
@@ -23,6 +24,7 @@ sqlTrackModifcation = getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
 app.config['SECRET_KEY'] = secretKey
 app.config['SQLALCHEMY_DATABASE_URI'] = dbUri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = sqlTrackModifcation
+app.config['CORS_HEADERS'] = corsHeaders
 
 
 # Activate Extensions
