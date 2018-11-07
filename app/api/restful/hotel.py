@@ -16,7 +16,7 @@ class HotelApi(Resource):
                 200: 'Success',
                 400: 'Bad Request'
              })
-    @token_required
+    # @token_required
     @api.marshal_with(hotelDetails, envelope='hotels')
     def get(self):
         views_hotels = (Hotel.query.filter(Hotel.isArchived.is_(False))
@@ -130,7 +130,7 @@ class HotelIdApi(Resource):
               200: 'Success',
               400: 'Bad Request'
              })
-    @token_required
+    # @token_required
     @api.marshal_list_with(hotelDetails, envelope='hotelDetails')
     def get(self, id):
         viewHotel = (Hotel.query.filter(Hotel.isArchived.is_(False))
