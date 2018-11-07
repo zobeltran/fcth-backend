@@ -11,7 +11,7 @@ now = datetime.now()
 
 @api.route('')
 class TicketApi(Resource):
-    @api.doc(security='apiKey',
+    @api.doc(security=None,
              responses={
               200: 'Success',
               400: 'Bad Request'
@@ -130,16 +130,17 @@ class TicketApi(Resource):
 @api.response(404, 'Not Found')
 @api.param('id', 'Flight Id')
 class TicketIdApi(Resource):
-    @api.doc(security='apiKey',
+    @api.doc(security=None,
              responses={
               200: 'Success',
               400: 'Bad Request'
              })
-    @token_required
-    @api.marshal_list_with(flightDetails, envelope='flightDetails')
+    # @token_required
+    @api.marshal_with(flightDetails, envelope='flightDetails')
+    # @api.marshal(flightDetails)
     def get(self, id):
         viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
-                       .filter(Ticket.id == id).all())
+                       .filter(Ticket.id == id).first())
         return viewFlights, 200
 
     @api.doc(security='apiKey',
