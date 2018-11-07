@@ -136,12 +136,17 @@ class TicketIdApi(Resource):
               400: 'Bad Request'
              })
     # @token_required
-    @api.marshal_with(flightDetails, envelope='flightDetails')
-    # @api.marshal(flightDetails)
+    # @api.marshal_with(flightDetails, envelope='flightDetails')
     def get(self, id):
         viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
                        .filter(Ticket.id == id).first())
-        return viewFlights, 200
+        if not viewFlights:
+            errors.append('Id does not exist')
+            return {'errors': {'status': 400,
+                               'errorCode': 'E0001',
+                               'message': errors}}, 400
+        return api.marshal(viewFlights, flightDetails,
+                           envelope='flightDetails'), 200
 
     @api.doc(security='apiKey',
              responses={

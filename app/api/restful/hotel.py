@@ -11,7 +11,7 @@ now = datetime.now()
 
 @api.route('')
 class HotelApi(Resource):
-    @api.doc(security='apiKey',
+    @api.doc(security=None,
              responses={
                 200: 'Success',
                 400: 'Bad Request'
@@ -125,17 +125,24 @@ class HotelApi(Resource):
 @api.response(404, 'Not Found')
 @api.param('id', 'Hotel Id')
 class HotelIdApi(Resource):
-    @api.doc(security='apiKey',
+    @api.doc(security=None,
              responses={
               200: 'Success',
               400: 'Bad Request'
              })
     # @token_required
-    @api.marshal_list_with(hotelDetails, envelope='hotelDetails')
+    # @api.marshal_with(hotelDetails, envelope='hotelDetails')
     def get(self, id):
         viewHotel = (Hotel.query.filter(Hotel.isArchived.is_(False))
-                     .filter(Hotel.id == id).all())
-        return viewHotel, 200
+                     .filter(Hotel.id == id).first())
+        if not viewHotel:
+            errors.append('Id does not exist')
+            return {'errors': {'status': 400,
+                               'errorCode': 'E0001',
+                               'message': errors}}, 400
+        else:
+            return api.marshal(viewHotel, hotelDetails,
+                               envelope='hotelDetails'), 200
 
     @api.doc(security='apiKey',
              response={
