@@ -27,7 +27,7 @@ class TicketApi(Resource):
               200: 'Success',
               400: 'Bad Request'
              })
-    @token_required
+    # @token_required
     @api.expect(postFlight)
     def post(self):
         errors.clear()
