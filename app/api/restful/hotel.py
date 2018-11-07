@@ -43,7 +43,7 @@ class HotelApi(Resource):
             print(now)
             print(type(checkIn))
             checkOut = parse(data['checkOut'])
-            price = data['price']
+            price = float(data['price'])
             expirationDate = parse(data['expirationDate'])
             isExpired = data['isExpired']
             isPackaged = data['isPackaged']
