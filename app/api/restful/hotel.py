@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from app.models import db, Hotel
 from app.helpers import token_required
-from app.api.models.hotel import api, hotelDetails, postHotel, deleteHotel
+from app.api.models.hotel import api, hotelDetails, postHotel
 from datetime import datetime
 from dateutil.parser import parse
 
