@@ -19,8 +19,7 @@ class HotelApi(Resource):
     # @token_required
     @api.marshal_with(hotelDetails, envelope='hotels')
     def get(self):
-        views_hotels = (Hotel.query.filter(Hotel.isArchived.is_(False))
-                        .filter(Hotel.isPackaged.is_(False)).all())
+        views_hotels = (Hotel.query.filter(Hotel.isArchived.is_(False)).all())
         return views_hotels, 200
 
     @api.doc(security='apiKey',

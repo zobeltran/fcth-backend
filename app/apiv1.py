@@ -5,6 +5,7 @@ from app.api.restful.package import api as package_api
 from app.api.restful.ticket import api as ticket_api
 from app.api.restful.hotel import api as hotel_api
 from app.api.restful.customer import api as customer_api
+from app.api.restful.package import api as package_api
 from app.helpers import authentication
 
 
@@ -18,3 +19,4 @@ api.add_namespace(package_api)
 api.add_namespace(ticket_api)
 api.add_namespace(hotel_api)
 api.add_namespace(customer_api)
+api.add_namespace(package_api)
