@@ -7,14 +7,15 @@ customerDetails = api.model('Customer Details',
                              'firstName': fields.String(),
                              'lastName': fields.String(),
                              'email': fields.String(),
-                             'contactNumber': fields.String(),
+                             'contactNo': fields.String(),
                              'isArchived': fields.Boolean()})
 
 postCustomer = api.model('Post Customer',
-                         {'firstName': fields.String(),
+                         {'requestId': fields.Integer(),
+                          'firstName': fields.String(),
                           'lastName': fields.String(),
                           'email': fields.String(),
-                          'contactNumber': fields.String()})
+                          'contactNo': fields.String()})
 
 deleteCustomer = api.model('Delete Customer',
                            {'isArchived': fields.Boolean()})

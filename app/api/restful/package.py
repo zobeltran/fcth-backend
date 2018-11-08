@@ -87,7 +87,7 @@ class PackageIdApi(Resource):
               400: 'Bad Request'
              })
     @token_required
-    @api.expect(postPackage)
+    # @api.expect(postPackage)
     # @cross_origin(allow_headers=['Content-Type'])
     def delete(self):
         return {'result': 'Package has been deleted'}

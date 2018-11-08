@@ -22,3 +22,7 @@ packageBookingDetails = api.model('Package Booking Details',
                                    'customer': fields.Integer(),
                                    'package': fields.Integer(),
                                    'isPaid': fields.Boolean()})
+
+postPackageBooking = api.model('Post Package Booking',
+                               {'customer': fields.Integer(),
+                                'package': fields.Integer()})
