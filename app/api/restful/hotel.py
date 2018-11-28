@@ -19,7 +19,9 @@ class HotelApi(Resource):
     # @token_required
     @api.marshal_with(hotelDetails, envelope='hotels')
     def get(self):
-        views_hotels = (Hotel.query.filter(Hotel.isArchived.is_(False)).all())
+        views_hotels = (Hotel.query.filter(Hotel.isArchived.is_(False))
+                        .filter(Hotel.isExpired.is_(False))
+                        .filter(Hotel.isPackaged.is_(False)).all())
         return views_hotels, 200
 
     @api.doc(security='apiKey',
@@ -33,6 +35,8 @@ class HotelApi(Resource):
         errors.clear()
         data = api.payload
         try:
+            print(data['expirationDate'])
+            print(data['checkIn'])
             name = data['name']
             roomType = data['roomType']
             capacity = data['capacity']
@@ -133,6 +137,7 @@ class HotelIdApi(Resource):
     # @api.marshal_with(hotelDetails, envelope='hotelDetails')
     def get(self, id):
         viewHotel = (Hotel.query.filter(Hotel.isArchived.is_(False))
+                     .filter(Hotel.isExpired.is_(False))
                      .filter(Hotel.id == id).first())
         if not viewHotel:
             errors.append('Id does not exist')
@@ -156,15 +161,15 @@ class HotelIdApi(Resource):
         try:
             name = data['name']
             roomType = data['roomType']
-            capacity = data['capacity']
+            capacity = int(data['capacity'])
             details = data['details']
             checkIn = parse(data['checkIn'])
             checkOut = parse(data['checkOut'])
-            price = data['price']
+            price = float(data['price'])
             expirationDate = parse(data['expirationDate'])
-            isExpired = data['isExpired']
-            isPackaged = data['isPackaged']
-            remainingRooms = data['remainingRooms']
+            isExpired = bool(data['isExpired'])
+            isPackaged = bool(data['isPackaged'])
+            remainingRooms = int(data['remainingRooms'])
             if (not name or not roomType
                     or not capacity
                     or not details
@@ -220,19 +225,26 @@ class HotelIdApi(Resource):
                                    'errorCode': 'E3001',
                                    'message': errors}}, 400
             else:
-                Hotel.name = name,
-                Hotel.roomType = roomType,
-                Hotel.capacity = capacity,
-                Hotel.details = details,
-                Hotel.checkIn = checkIn,
-                Hotel.checkOut = checkOut,
-                Hotel.price = price,
-                Hotel.expirationDate = expirationDate,
-                Hotel.remainingRooms = remainingRooms,
-                Hotel.isExpired = isExpired,
-                Hotel.isPackaged = isPackaged
-                db.session.commit()
-                return {'message': 'Successfully updated'}, 200
+                hotel = Hotel.query.get(id)
+                if not hotel:
+                    errors.append('Id not existing')
+                    return {'errors': {'status': 400,
+                                       'errorCode': 'E2002',
+                                       'message': errors}}, 400
+                else:
+                    hotel.name = name,
+                    hotel.roomType = roomType,
+                    hotel.capacity = capacity,
+                    hotel.details = details,
+                    hotel.checkIn = checkIn,
+                    hotel.checkOut = checkOut,
+                    hotel.price = price,
+                    hotel.expirationDate = expirationDate,
+                    hotel.remainingRooms = remainingRooms,
+                    hotel.isExpired = isExpired,
+                    hotel.isPackaged = bool(isPackaged)
+                    db.session.commit()
+                    return {'message': 'Successfully updated'}, 200
         except KeyError:
             errors.append('Incomplete json nodes')
             return {'errors': {'status': 400,
@@ -264,3 +276,19 @@ class HotelIdApi(Resource):
             return {'errors': {'status': 400,
                                'errorCode': 'E0001',
                                'message': errors}}, 400
+
+
+@api.route('/packaged')
+class HotelPackagedApi(Resource):
+    @api.doc(security=None,
+             responses={
+                200: 'Success',
+                400: 'Bad Request'
+             })
+    # @token_required
+    @api.marshal_with(hotelDetails, envelope='hotels')
+    def get(self):
+        views_hotels = (Hotel.query.filter(Hotel.isArchived.is_(False))
+                        .filter(Hotel.isExpired.is_(False))
+                        .filter(Hotel.isPackaged.is_(True)).all())
+        return views_hotels, 200

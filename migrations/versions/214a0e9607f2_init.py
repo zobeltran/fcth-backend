@@ -1,8 +1,8 @@
-"""Init to database
+"""Init
 
-Revision ID: ce2a666a39f4
+Revision ID: 214a0e9607f2
 Revises: 
-Create Date: 2018-11-01 19:58:14.780200
+Create Date: 2018-11-10 09:06:38.513668
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ce2a666a39f4'
+revision = '214a0e9607f2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,14 +62,14 @@ def upgrade():
     sa.Column('Id', sa.Integer(), nullable=False),
     sa.Column('Name', sa.String(length=250), nullable=True),
     sa.Column('Room Type', sa.String(length=250), nullable=True),
-    sa.Column('Capacity', sa.String(length=4), nullable=True),
+    sa.Column('Capacity', sa.Integer(), nullable=True),
     sa.Column('Details', sa.String(length=300), nullable=True),
-    sa.Column('CheckIn', sa.DateTime(), nullable=True),
-    sa.Column('CheckOut', sa.DateTime(), nullable=True),
+    sa.Column('CheckIn', sa.Date(), nullable=True),
+    sa.Column('CheckOut', sa.Date(), nullable=True),
     sa.Column('Price', sa.Float(asdecimal=True), nullable=True),
     sa.Column('ExpirationDate', sa.Date(), nullable=True),
     sa.Column('IsExpired', sa.Boolean(), nullable=True),
-    sa.Column('isPackaged', sa.Boolean(), nullable=True),
+    sa.Column('IsPackaged', sa.Boolean(), nullable=True),
     sa.Column('DateCreated', sa.DateTime(), nullable=True),
     sa.Column('DateUpdated', sa.DateTime(), nullable=True),
     sa.Column('RemainingRooms', sa.Integer(), nullable=True),

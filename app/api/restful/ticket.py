@@ -19,6 +19,7 @@ class TicketApi(Resource):
     @api.marshal_list_with(flightDetails, envelope='flights')
     def get(self):
         viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
+                       .filter(Ticket.isExpired.is_(False))
                        .filter(Ticket.isPackaged.is_(False)).all())
         return viewFlights, 200
 
@@ -139,6 +140,7 @@ class TicketIdApi(Resource):
     # @api.marshal_with(flightDetails, envelope='flightDetails')
     def get(self, id):
         viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
+                       .filter(Ticket.isExpired.is_(False))
                        .filter(Ticket.id == id).first())
         if not viewFlights:
             errors.append('Id does not exist')
@@ -276,3 +278,18 @@ class TicketIdApi(Resource):
             ticket.isArchived = True
             db.session.commit()
             return {'message': 'Successfully Deleted'}, 200
+
+
+@api.route('/packaged')
+class TicketPackageApi(Resource):
+    @api.doc(security=None,
+             responses={
+              200: 'Success',
+              400: 'Bad Request'
+             })
+    @api.marshal_list_with(flightDetails, envelope='flights')
+    def get(self):
+        viewFlights = (Ticket.query.filter(Ticket.isArchived.is_(False))
+                       .filter(Ticket.isPackaged.is_(True))
+                       .filter(Ticket.isExpired.is_(False)).all())
+        return viewFlights, 200
