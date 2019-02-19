@@ -157,7 +157,7 @@ class RegisterApi(Resource):
 # @cross_origin(allow_headers=['Content-Type'])
 class UserApi(Resource):
 
-    @api.doc(security='apiKey', responses={200: 'Success',
+    @api.doc(security=None, responses={200: 'Success',
                                            401: 'Unauthorized'
                                            })
     # @token_required
