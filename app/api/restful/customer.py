@@ -205,69 +205,74 @@ class CustomerFlightApi(Resource):
                                'errorCode': 'E0001',
                                'message': errors}}, 400
 
-@api.route('/charge/flight')
-class CustomerChargeFlightApi(Resource):
-    @api.doc(security=None,
-             responses={
-                200: 'Success',
-                400: 'Bad Request'
-             })
-    @api.expect(postCustomer)
-    try:
-            flightId = data['requestId']
-            firstName = data['firstName']
-            lastName = data['lastName']
-            email = data['email']
-            contactNo = data['contactNo']
-            if(not firstName or not lastName
-                    or not email or not contactNo):
-                if not firstName:
-                    errors.append('First Name is Required')
-                if not lastName:
-                    errors.append('Last Name is Required')
-                if not email:
-                    errors.append('Email is Required')
-                if not contactNo:
-                    errors.append('Contact Number is Required')
-                return {'errors': {'status': 400,
-                                   'errorCode': 'E3000',
-                                   'message': errors}}, 400
-            else:
-                new_customer = Customer(firstName=firstName,
-                                        lastName=lastName,
-                                        email=email,
-                                        contactNo=contactNo)
-                db.session.add(new_customer)
-                db.session.commit()
-                flightTransaction = FlightBooking(
-                                        referenceNumber='FB'+referenceNumber,
-                                        customer=new_customer.id,
-                                        flight=flightId
-                                        )
-                db.session.add(flightTransaction)
-                db.session.commit()
-                return {'message': 'Successful Booking',
-                        'bookingId': flightTransaction.id}, 200
-        except KeyError:
-            errors.append('Incomplete json nodes')
-            return {'errors': {'status': 400,
-                               'errorCode': 'E0001',
-                               'message': errors}}, 400
 
-@api.route('/charge/flight')
-class CustomerChargeHotelApi(Resource):
-    @api.doc(security=None,
-             responses={
-                200: 'Success',
-                400: 'Bad Request'
-             })
-    @api.expect(postCustomer)
+# @api.route('/charge/flight')
+# class CustomerChargeFlightApi(Resource):
+#     @api.doc(security=None,
+#              responses={
+#                 200: 'Success',
+#                 400: 'Bad Request'
+#              })
+#     @api.expect(postCustomer)
+#     def post(self):
+#         errors.clear()
+#         data = api.payload
+#         try:
+#             flightId = data['requestId']
+#             firstName = data['firstName']
+#             lastName = data['lastName']
+#             email = data['email']
+#             contactNo = data['contactNo']
+#             if(not firstName or not lastName
+#                     or not email or not contactNo):
+#                 if not firstName:
+#                     errors.append('First Name is Required')
+#                 if not lastName:
+#                     errors.append('Last Name is Required')
+#                 if not email:
+#                     errors.append('Email is Required')
+#                 if not contactNo:
+#                     errors.append('Contact Number is Required')
+#                 return {'errors': {'status': 400,
+#                                    'errorCode': 'E3000',
+#                                    'message': errors}}, 400
+#             else:
+#                 new_customer = Customer(firstName=firstName,
+#                                         lastName=lastName,
+#                                         email=email,
+#                                         contactNo=contactNo)
+#                 db.session.add(new_customer)
+#                 db.session.commit()
+#                 flightTransaction = FlightBooking(
+#                                         referenceNumber='FB'+referenceNumber,
+#                                         customer=new_customer.id,
+#                                         flight=flightId
+#                                         )
+#                 db.session.add(flightTransaction)
+#                 db.session.commit()
+#                 return {'message': 'Successful Booking',
+#                         'bookingId': flightTransaction.id}, 200
+#         except KeyError:
+#             errors.append('Incomplete json nodes')
+#             return {'errors': {'status': 400,
+#                                'errorCode': 'E0001',
+#                                'message': errors}}, 400
 
-@api.route('/charge/flight')
-class CustomerChargePackageApi(Resource):
-    @api.doc(security=None,
-             responses={
-                200: 'Success',
-                400: 'Bad Request'
-             })
-    @api.expect(postCustomer)
+# @api.route('/charge/flight')
+# class CustomerChargeHotelApi(Resource):
+#     @api.doc(security=None,
+#              responses={
+#                 200: 'Success',
+#                 400: 'Bad Request'
+#              })
+#     @api.expect(postCustomer)
+
+
+# @api.route('/charge/flight')
+# class CustomerChargePackageApi(Resource):
+#     @api.doc(security=None,
+#              responses={
+#                 200: 'Success',
+#                 400: 'Bad Request'
+#              })
+#     @api.expect(postCustomer)
