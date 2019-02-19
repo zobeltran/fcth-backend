@@ -160,7 +160,7 @@ class UserApi(Resource):
     @api.doc(security='apiKey', responses={200: 'Success',
                                            401: 'Unauthorized'
                                            })
-    @token_required
+    # @token_required
     @api.marshal_list_with(a_user_details, envelope='users')
     def get(self):
         view_users = User.query.all()
