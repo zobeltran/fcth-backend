@@ -5,7 +5,6 @@ from app.api.restful.package import api as package_api
 from app.api.restful.ticket import api as ticket_api
 from app.api.restful.hotel import api as hotel_api
 from app.api.restful.customer import api as customer_api
-from app.api.restful.package import api as package_api
 from app.helpers import authentication
 
 

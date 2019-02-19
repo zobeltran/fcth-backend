@@ -2,24 +2,28 @@ from flask_restplus import Namespace, fields
 
 api = Namespace('Users', 'User related APIs', path='/users')
 
+
+a_user_name = api.model('name',
+                        {'first': fields.String(desc=("First Name "
+                                                      "of the Employee")),
+                         'middle': fields.String(desc=("Middle Name "
+                                                       "of the Employee")),
+                         'last': fields.String(desc=("Last Name "
+                                                     "of the Employee"))
+                         })
 a_user_details = api.model('users',
                            {'id': fields.Integer(),
-                            'firstName': fields.String(),
-                            'middleName': fields.String,
-                            'lastName': fields.String(),
+                            'name': fields.Nested(a_user_name),
                             'email': fields.String(),
                             'username': fields.String(),
-                            'password_hashed': fields.String(),
+                            'passwordHashed': fields.String(),
                             'role': fields.String(),
                             'publicId': fields.String(),
                             'dateCreated': fields.DateTime(),
                             'dateUpdated': fields.DateTime()
                             })
 a_user = api.model('user',
-                   {'firstName': fields.String(desc=("First Name "
-                                                     "of the Employee")),
-                    'middleName': fields.String(),
-                    'lastName': fields.String(),
+                   {'name': fields.Nested(a_user_name),
                     'email': fields.String(),
                     'username': fields.String(),
                     'password': fields.String(),
