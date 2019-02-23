@@ -232,17 +232,17 @@ class HotelIdApi(Resource):
                                        'errorCode': 'E2002',
                                        'message': errors}}, 400
                 else:
-                    hotel.name = name,
-                    hotel.roomType = roomType,
-                    hotel.capacity = capacity,
-                    hotel.details = details,
-                    hotel.checkIn = checkIn,
-                    hotel.checkOut = checkOut,
-                    hotel.price = price,
-                    hotel.expirationDate = expirationDate,
-                    hotel.remainingRooms = remainingRooms,
-                    hotel.isExpired = isExpired,
-                    hotel.isPackaged = bool(isPackaged)
+                    hotel.name = name
+                    hotel.roomType = roomType
+                    hotel.capacity = capacity
+                    hotel.details = details
+                    hotel.checkIn = checkIn
+                    hotel.checkOut = checkOut
+                    hotel.price = price
+                    hotel.expirationDate = expirationDate
+                    hotel.remainingRooms = remainingRooms
+                    hotel.isExpired = isExpired
+                    hotel.isPackaged = isPackaged
                     db.session.commit()
                     return {'message': 'Successfully updated'}, 200
         except KeyError:
